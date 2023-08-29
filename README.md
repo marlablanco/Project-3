@@ -1,1 +1,11 @@
 # Project-3
+Our group plans to collect and translate United States climate and natural disaster data over the last 20 years. We will pull from multiple government websites to create a database and API to then create graphs and maps of the natural disasters. We predict these natural disasters have a positive correlation with the Earth's annual recorded surface temperature increase, and will show a general increase in frequency as years pass. Our maps will be filled in or colored in by a selected natural disaster depending on the natural disasters trend over time. Based on user interaction, we will take the selected query, feed it through the api, to retrieve database information to create graphs or maps. A couple of the databases we plan to use are:
+
+https://www.fema.gov/openfema-data-page/disaster-declarations-summaries-v2
+
+
+https://data.giss.nasa.gov/gistemp/sources_v4/
+
+
+
+ 
