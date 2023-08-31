@@ -14,4 +14,6 @@ https://climate.nasa.gov/vital-signs/global-temperature/
 
 <img width="556" alt="Screenshot 2023-08-30 at 8 21 06 PM" src="https://github.com/marlablanco/Project-3/assets/131930449/9411a5ba-2537-4681-8707-e5fd4a19f34b">
 
+
+Reference: https://climate.nasa.gov/
 <img width="677" alt="Project 3 Mockup" src="https://github.com/marlablanco/Project-3/assets/132520770/e371df8e-30d2-4c21-a5fe-c2dc0fa3633a">
