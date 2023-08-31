@@ -8,4 +8,5 @@ https://data.giss.nasa.gov/gistemp/sources_v4/
 
 
 
- 
+ ![image](https://github.com/marlablanco/Project-3/assets/131930449/e56857b2-02ae-45da-a46b-70ae7d7a1a8a)
+
