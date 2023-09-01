@@ -17,3 +17,11 @@ https://climate.nasa.gov/vital-signs/global-temperature/
 
 Reference: https://climate.nasa.gov/
 <img width="677" alt="Project 3 Mockup" src="https://github.com/marlablanco/Project-3/assets/132520770/e371df8e-30d2-4c21-a5fe-c2dc0fa3633a">
+
+
+1. ETL, data to database-Jason done, Marla and Ryan to add their datasets by team check-in Monday 9/4
+2. Flask setup and running-Jason done, Marla and Ryan verify once datasets are added by 9/4
+3. Flask connects to database-Jason done, Marla and Ryan verify once datasets are added by 9/4
+4. JS use database to visualize-Ryan as primary, have something by Wed 9/6
+5. Visualization are interactive-Marla as primary, have something by Wed 9/6
+6. Review and wrap everything up by 9/7 to exclusively on presentation
