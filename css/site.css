@@ -1,0 +1,28 @@
+.center {
+    text-align: center;
+}
+
+.choices {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    background-color: antiquewhite;
+}
+
+.choices .mini {
+    font-size: 8px;
+}
+
+.dropdown {
+    background-color: white;
+}
+
+.dropdowns {
+    padding: 10px 0;
+}
+
+.submit {
+    background-color: white;
+    display: none;
+}
