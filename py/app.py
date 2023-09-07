@@ -59,6 +59,17 @@ def disasters_by_date() -> Response:
 
     return make_json_response(run_sql_command(query))
 
+@app.route("/api/v1.0/world-disaster-by-year")
+def temperature_by_year():
+    """Return the world disasters by year as a JSON Response"""
+    query = """
+            SELECT year, disaster_type, COUNT(*) AS count
+            FROM world_disasters_1970_2021
+            GROUP BY year, disaster_type
+            ORDER BY year
+            """
+    return make_json_response(run_sql_command(query))
+
 #################################################
 # Helper Functions
 #################################################
