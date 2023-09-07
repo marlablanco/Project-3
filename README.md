@@ -29,4 +29,7 @@ Reference: https://climate.nasa.gov/
 ### Sources
 
 `geojson-counties-fips.json` was sourced from https://github.com/plotly/datasets
+
+`counties.geojson` was sourced from https://gist.github.com/sdwfrost/d1c73f91dd9d175998ed166eb216994a#file-counties-geojson
+
 `fipsToState.json` was sourced from https://gist.github.com/wavded/1250983/bf7c1c08f7b1596ca10822baeb8049d7350b0a4b
