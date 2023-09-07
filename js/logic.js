@@ -1,5 +1,6 @@
 const url = "http://localhost:5000/api/v1.0/disasters-by-year"
 const url2 = "http://localhost:5000/api/v1.0/disasters-by-date?start=2003&col=fy_declared,declaration_type,count(distinct(disaster_number))&groups=fy_declared,declaration_type&order=fy_declared,declaration_type"
+const url3 = "http://127.0.0.1:5000/api/v1.0/world-disaster-by-year"
 
 d3.json(url).then(j => {
     trace = {
