@@ -76,20 +76,19 @@
                 $('#disaster-type').append(`<option value=${t[0]}>${t[0]}</option>`);
             });
         });
-        d3.json('http://127.0.0.1:5000/api/v1.0/us-disaster-years').then(j => {
-            let fromEnd = 0;
-            for (let i = 0; i < j.length; ++i) {
-                fromEnd = j.length - (1 + i);
-                $('#start-year').append(`<option>${j[i][0]}</option>`);
-                $('#end-year').append(`<option>${j[fromEnd][0]}</option>`);
-            }
-        });
-        let fromEnd = 2023;
+        let endYear = 2023;
+        for (let i = 1953; i <= 2023; ++i)
+        {
+            $('#start-year').append(`<option>${j[i][0]}</option>`);
+            $('#end-year').append(`<option>${j[endYear][0]}</option>`);
+            --endYear;
+        }
+        endYear = 2023;
         for (let i = 1980; i <= 2023; ++i) {
             $('#year-start').append(`<option>${i}</option>`);
-            $('#year-end').append(`<option>${fromEnd}</option>`);
+            $('#year-end').append(`<option>${endYear}</option>`);
             $('#year-month').append(`<option>${i}</option>`);
-            --fromEnd;
+            --endYear;
         }
         onStudentDropdownChanged("jason");
     </script>
