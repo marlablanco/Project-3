@@ -25,3 +25,11 @@ Reference: https://climate.nasa.gov/
 4. JS use database to visualize-Ryan as primary, have something by Wed 9/6
 5. Visualization are interactive-Marla as primary, have something by Wed 9/6
 6. Review and wrap everything up by 9/7 to exclusively on presentation
+
+### Sources
+
+`geojson-counties-fips.json` was sourced from https://github.com/plotly/datasets
+
+`counties.geojson` was sourced from https://gist.github.com/sdwfrost/d1c73f91dd9d175998ed166eb216994a#file-counties-geojson
+
+`fipsToState.json` was sourced from https://gist.github.com/wavded/1250983/bf7c1c08f7b1596ca10822baeb8049d7350b0a4b

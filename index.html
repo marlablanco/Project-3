@@ -1,18 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Greek Results</title>
-    <!-- D3 Library -->
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <!-- Plotly Library -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-</head>
-<body>
-    <div id="graph"></div>
-    <div id="graph2"></div>
-    <script src="js/logic.js"></script>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Project 3 - Natural Disasters Over Time</title>
+        <link rel="stylesheet" type="text/css" href="css/site.css">
+        <!-- D3 Library -->
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <!-- Plotly Library -->
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="js/jquery-3.7.1.min.js"></script>
+        <script src="js/url_util.js"></script>
+        <script src="js/logic.js"></script>
+    </head>
+    <body>
+        <div class="choices">
+            <h1>Welcome to the Natural Disasters Dashboard!</h1>
+            <div class="mini">The disast-board, if you will...</div>
+            <div class="center">
+                <select id="student-dropdown" class="dropdown" onchange="onStudentDropdownChanged(this.value)">
+                    <option value="jason">US Disasters/Map</option>
+                    <option value="marla">Global Temperature</option>
+                    <option value="ryan">Global Disasters</option>
+                </select>
+            </div>
+            <div class="dropdowns jason">
+                <span>Format:</span>
+                <select id="format-dropdown" class="dropdown jason format" onchange="onFormatDropdownChanged(this.value)">
+                    <option value="graph">Graph</option>
+                    <option value="map">Map</option>
+                </select>
+                <span>Start Year:</span>
+                <select id="start-year" class="dropdown jason year begin"></select>
+                <span>End Year:</span>
+                <select id="end-year" class="dropdown jason year end"></select>
+                <span>Disaster Type:</span>
+                <select id="disaster-type" class="dropdown jason type">
+                    <option>All</option>
+                </select>
+                <span>Overlay Temperature?</span>
+                <input type="checkbox" id="overlay-temp">
+                <div>Note: Actual values may be more restricted than your selection, due to available data</div>
+            </div>
+            <div class="dropdowns marla">
+            </div>
+            <div class="dropdowns ryan">
+            </div>
+            <div class="submit-buttons">
+                <button class="submit graph" onclick="graphFunctions[$('#student-dropdown').find(':selected').val()]()">Submit</button>
+                <button class="submit map" onclick="openMap()">Submit</button>
+            </div>
+        </div>
+        <div id="graph-area"></div>
+        <script>
+            // Page setup
+            d3.json('http://localhost:5000/api/v1.0/us-disaster-types').then(j => {
+                j.forEach(t => {
+                    $('#disaster-type').append(`<option value=${t[0]}>${t[0]}</option>`);
+                });
+            });
+            d3.json('http://localhost:5000/api/v1.0/us-disaster-years').then(j => {
+                let fromEnd = 0;
+                for (let i = 0; i < j.length; ++i)
+                {
+                    fromEnd = j.length - (1 + i);
+                    $('#start-year').append(`<option>${j[i][0]}</option>`);
+                    $('#end-year').append(`<option>${j[fromEnd][0]}</option>`);
+                }
+            });
+            onStudentDropdownChanged("jason");
+        </script>
+    </body>
 </html>

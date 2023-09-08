@@ -1,13 +1,23 @@
-from flask import Flask, jsonify, Response, request
+from flask import Flask, jsonify, Response, request, current_app
 from flask_cors import CORS
-from typing import List, Tuple, Any
-import sqlite3
+import json
+from operator import eq, le, ge, ne
+from pathlib import Path
+from typing import List, Dict, Tuple, Any
+from sqlalchemy import create_engine, Column, func, distinct
+from sqlalchemy.orm import Session
+from orm_local import Base, disasters, temperature_anomalies, world_disasters_1970_2021
 
 #################################################
 # Flask Setup
 #################################################
 app = Flask(__name__)
+app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 CORS(app)
+
+FIPS_TO_STATE = json.loads(Path('../data/fipsToState.json').read_text(encoding='utf-8'))
+GEOJSON_COUNTIES_FIPS = json.loads(Path('../data/geojson-counties-fips.json').read_text(encoding='utf-8'))
+GEOJSON_COUNTIES = json.loads(Path('../data/counties.geojson').read_text(encoding='utf-8'))
 
 #################################################
 # Flask Routes
@@ -22,42 +32,70 @@ def welcome():
         "/api/v1.0/disasters-by-year<br/>"
     )
 
-@app.route("/api/v1.0/disasters-by-year")
-def disasters_by_year() -> Response:
-    """Return the disaster data as a JSON Response"""
-    query = """
-            SELECT fy_declared, COUNT(DISTINCT(disaster_number))
-            FROM disasters
-            GROUP BY fy_declared
-            ORDER BY fy_declared
-        """
-    return make_json_response(run_sql_command(query))
-
-@app.route("/api/v1.0/disasters-by-date", methods=["GET"])
+@app.route("/api/v1.0/us-disasters-by-year", methods=["GET"])
 def disasters_by_date() -> Response:
     """Returns disaster columns between start and end, if given"""
     args = request.args
+
+    cols: List[Column] = [disasters.fy_declared, func.count(distinct(disasters.disaster_number))]
+    joins: List[Tuple[Column, Column]] = []
+    if (bool(int(args.get("add_temp"))) if args.get("add_temp") else False):
+        cols.append(temperature_anomalies.Anomaly)
+        joins.append((disasters.fy_declared, temperature_anomalies.year))
+
+    groups = [disasters.fy_declared]
+    order = [disasters.fy_declared]
+
+    filters: List[Tuple[Column, str, int | float | str]] = []
     start_date = int(args.get("start")) if args.get("start") else None
+    if start_date:
+        filters.append((disasters.fy_declared, ">=", start_date))
     end_date = int(args.get("end")) if args.get("end") else None
-    columns = args.get("col")
-    groups = args.get("groups")
-    order = args.get("order")
+    if end_date:
+        filters.append((disasters.fy_declared, "<=", end_date))
+    disaster_type = args.get("type")
+    if disaster_type:
+        filters.append((disasters.incident_type, "==", disaster_type))
 
-    query = f"SELECT {columns if columns else '*'} FROM disasters"
-    if start_date or end_date:
-        query = f'{query} WHERE'
-        if start_date:
-            query = f'{query} fy_declared >= {start_date}'
-            if end_date:
-                query = f'{query} AND'
-        if end_date:
-            query = f'{query} fy_declared < {end_date}'
-    if groups:
-        query = f'{query} GROUP BY {groups}'
-    if order:
-        query = f'{query} ORDER BY {order}'
+    return make_json_response(run_sql_command(
+        cols, filters, groups, order, joins
+    ))
 
-    return make_json_response(run_sql_command(query))
+@app.route("/api/v1.0/us-disasters-by-year-and-location", methods=["GET"])
+def disasters_by_year_and_location() -> Response:
+    args = request.args
+
+    cols: List[Column] = [disasters.fips_state_code, disasters.fips_county_code]
+    filters: List[Tuple[Column, str, int | float | str]] = []
+    start_date = int(args.get("start")) if args.get("start") else None
+    if start_date:
+        filters.append((disasters.fy_declared, ">=", start_date))
+    end_date = int(args.get("end")) if args.get("end") else None
+    if end_date:
+        filters.append((disasters.fy_declared, "<=", end_date))
+    disaster_type = args.get("type")
+    if disaster_type:
+        filters.append((disasters.incident_type, "==", disaster_type))
+
+    return make_json_response(run_sql_command(cols, filters))
+
+@app.route('/api/v1.0/us-disaster-types')
+def us_disaster_types() -> Response:
+    return make_json_response(
+        run_sql_command(
+            [distinct(disasters.incident_type)],
+            order=[disasters.incident_type]
+        )
+    )
+
+@app.route('/api/v1.0/us-disaster-years')
+def us_disaster_years() -> Response:
+    return make_json_response(
+        run_sql_command(
+            [distinct(disasters.fy_declared)],
+            order=[disasters.fy_declared]
+        )
+    )
 
 @app.route("/api/v1.0/world-disaster-by-year")
 def temperature_by_year():
@@ -128,15 +166,38 @@ def temp_anomalies() -> Response:
 # Helper Functions
 #################################################
 
-def run_sql_command(command: str) -> List[Tuple[Any, ...]]:
+op_map = {
+    ">=": ge,
+    "<=": le,
+    "!=": ne,
+    "==": eq
+}
+
+def run_sql_command(
+        cols: List[Column],
+        filters: List[Tuple[Column, str, int | float | str]] = [],
+        groups: List[Column] = [],
+        order: List[Column] = [],
+        joins: List[Tuple[Column, Column]] = []
+    ) -> List[Tuple[Any, ...]]:
     """Runs the given SQL command and returns the records as a list of tuples"""
-    conn = sqlite3.connect("../data/natural_disasters_db.sqlite")
-    cur = conn.cursor()
-    cur.execute(command)
-    records = cur.fetchall()
-    cur.close()
-    conn.close()
-    return records
+    engine = create_engine("sqlite:///../data/natural_disasters_db.sqlite")
+    Base.metadata.create_all(engine)
+    session = Session(bind=engine)
+    query = session.query(*cols)
+    if filters:
+        for col, op, val in filters:
+            query = query.filter(op_map[op](col, val))
+    if joins:
+        for col1, col2 in joins:
+            query = query.filter(col1 == col2)
+    if groups:
+        query = query.group_by(*groups)
+    if order:
+        query = query.order_by(*order)
+    records = query.all()
+    session.close()
+    return [tuple(record) for record in records]
 
 def make_json_response(content) -> Response:
     """Turns a piece of content into a json Response with CORS"""
@@ -144,5 +205,28 @@ def make_json_response(content) -> Response:
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
+#################################################
+# Map stuff
+#################################################
+
+@app.route("/api/v1.0/fips-to-state")
+def fips_to_state() -> Response:
+    response = jsonify(FIPS_TO_STATE)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+@app.route("/api/v1.0/geojson-counties-fips")
+def geojson_counties_fips() -> Response:
+    response = jsonify(GEOJSON_COUNTIES_FIPS)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+@app.route("/api/v1.0/geojson-counties")
+def geojson_counties() -> Response:
+    response = jsonify(GEOJSON_COUNTIES)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
 if __name__ == "__main__":
     app.run(debug=True)
+
