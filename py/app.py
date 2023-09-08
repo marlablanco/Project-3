@@ -23,6 +23,9 @@ GEOJSON_COUNTIES = json.loads(Path('../data/counties.geojson').read_text(encodin
 # Flask Routes
 #################################################
 
+########################
+# Jason's routes
+
 @app.route("/")
 def welcome():
     """Returns available routes"""
@@ -37,7 +40,10 @@ def disasters_by_date() -> Response:
     """Returns disaster columns between start and end, if given"""
     args = request.args
 
+    # columns
     cols: List[Column] = [disasters.fy_declared, func.count(distinct(disasters.disaster_number))]
+
+    # if they checked the temperature box, we need to join 
     joins: List[Tuple[Column, Column]] = []
     if (bool(int(args.get("add_temp"))) if args.get("add_temp") else False):
         cols.append(temperature_anomalies.Anomaly)
@@ -97,26 +103,8 @@ def us_disaster_years() -> Response:
         )
     )
 
-@app.route("/api/v1.0/world-disaster-by-year")
-def temperature_by_year():
-    """Return the world disasters by year as a JSON Response"""
-    query = """
-            SELECT year, disaster_type, COUNT(*) AS count
-            FROM world_disasters_1970_2021
-            GROUP BY year, disaster_type
-            ORDER BY year
-            """
-    return make_json_response(run_sql_command(query))
-
-
-@app.route("/")
-def welcome1():
-    """Returns available route"""
-    return (
-        "Welcome to Marla's Temperature API!<br/>"
-        "Available Routes:<br/>"
-        "/api/v1.0/temperature-by-year<br/>"
-    )
+################################
+# Marla's routes
 
 @app.route("/api/v1.0/temperature-by-year")
 def temp_by_year() -> Response:
@@ -161,6 +149,20 @@ def temp_anomalies() -> Response:
 
     # return the data as JSON response
     return make_json_response(data)
+
+##############################
+# Ryan's routes
+
+@app.route("/api/v1.0/world-disaster-by-year")
+def temperature_by_year():
+    """Return the world disasters by year as a JSON Response"""
+    query = """
+            SELECT year, disaster_type, COUNT(*) AS count
+            FROM world_disasters_1970_2021
+            GROUP BY year, disaster_type
+            ORDER BY year
+            """
+    return make_json_response(run_sql_command(query))
 
 #################################################
 # Helper Functions
