@@ -48,16 +48,16 @@
         <div class="dropdowns marla">
             <!-- Marla's dropdowns area -->
             <span>Format:</span>
-            <select id="dropdown-format" class="dropdown marla format" onchange="onFormatDropdownChanged(this.value)">
+            <select id="dropdown-format" class="dropdown marla format" onchange="onTimeFormatDropdownChanged(this.value)">
                 <option value="year-graph">Year</option>
                 <option value="month-graph">Month</option>
             </select>
             <span>Start Year:</span>
-            <select id="year-start" class="dropdown marla year begin"></select>
+            <select id="year-start" class="time-drop-down year-graph"></select>
             <span>End Year:</span>
-            <select id="year-end" class="dropdown marla year end"></select>
+            <select id="year-end" class="time-drop-down year-graph"></select>
             <span>Year:</span>
-            <select id="year-month" class="dropdown marla month"></select>
+            <select id="year-month" class="time-drop-down month-graph"></select>
         </div>
         <div class="dropdowns ryan">
             <!-- Ryan's dropdowns area -->
@@ -84,12 +84,12 @@
                 $('#end-year').append(`<option>${j[fromEnd][0]}</option>`);
             }
         });
-        let fromEnd = 0;
+        let fromEnd = 2023;
         for (let i = 1980; i <= 2023; ++i) {
-            fromEnd = 2023 - i;
             $('#year-start').append(`<option>${i}</option>`);
             $('#year-end').append(`<option>${fromEnd}</option>`);
             $('#year-month').append(`<option>${i}</option>`);
+            --fromEnd;
         }
         onStudentDropdownChanged("jason");
     </script>

@@ -52,9 +52,9 @@ function openMap() {
 // ----------------------
 // Marla's function area
 // ----------------------
-
+const months=['','January','February','March','April','May','June','July','August','September','October','November','December']
 function makeGraphsMarla() {
-    if ($('#dropdown-format>option:selected')) { makeYearGraph() }
+    if ($('#dropdown-format').val()==='year-graph') { makeYearGraph() }
     else { makeMonthGraph() }
 }
 function makeYearGraph() {
@@ -83,7 +83,7 @@ function makeYearGraph() {
             hovermode: "closest",
         };
 
-        Plotly.newPlot("temp-graph", trace, layout);
+        Plotly.newPlot("graph-area", trace, layout);
     });
 
 }
@@ -96,9 +96,10 @@ function makeMonthGraph() {
         let month = new Array(j.length);
         let Anomaly = new Array(j.length);
         for (let i = 0; i < j.length; ++i) {
-            month[i] = j[i][0];
+            month[i] = months[j[i][0]];
             Anomaly[i] = j[i][1];
         }
+        
         let trace2 = [{
             x: month,
             y: Anomaly,
@@ -112,7 +113,7 @@ function makeMonthGraph() {
             hovermode: "closest",
         };
 
-        Plotly.newPlot("month-graph", trace2, layout2)
+        Plotly.newPlot("graph-area", trace2, layout2)
     });
 }
 
@@ -146,4 +147,9 @@ function onStudentDropdownChanged(val) {
 function onFormatDropdownChanged(val) {
     $('.submit').hide();
     $(`.submit.${val}`).show();
+}
+
+function onTimeFormatDropdownChanged(val) {
+    $('.time-drop-down').hide();
+    $(`.time-drop-down.${val}`).show();
 }
