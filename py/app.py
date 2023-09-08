@@ -106,19 +106,19 @@ def us_disaster_years() -> Response:
 ################################
 # Marla's routes
 
-@app.route("/api/v1.0/temperature-by-year")
+@app.route("/api/v1.0/temperature-by-month", methods=["GET"])
 def temp_by_year() -> Response:
     """Return the temperature anomaly data as a JSON Response"""
-    query = """
-            SELECT year, Anomaly COUNT(DISTINCT(month))
-            FROM temperature_anomalies
-            GROUP BY year, Anomaly
-            ORDER BY year
-        """
-    return make_json_response(run_sql_command(query))
+    args = request.args
+    selected_year=int(args.get("selected_year")) if args.get("selected_year") else None
+    
+    columns=[temperature_anomalies.month, temperature_anomalies.Anomaly]
+    order_by=[temperature_anomalies.month]
+    filters=[(temperature_anomalies.year,"==",selected_year)]
+    return make_json_response(run_sql_command(columns,filters,order=order_by))
 
 # flask route for retrieving temperature anomaly data
-@app.route("/api/v1.0/temperature-anomalies", methods=["GET"])
+@app.route("/api/v1.0/temperature-by-year", methods=["GET"])
 def temp_anomalies() -> Response:
     """returns temperature anomaly data with filtering/aggregation options"""
 
@@ -126,26 +126,14 @@ def temp_anomalies() -> Response:
     args = request.args
     start_year = int(args.get("start_year")) if args.get("start_year") else None
     end_year = int(args.get("end_year")) if args.get("end_year") else None
-    group_by = args.get("group_by")
-    order_by = args.get("order_by")
+    group_by = [temperature_anomalies.year]
+    order_by = [temperature_anomalies.year]
+    filters=[(temperature_anomalies.year,">=",start_year),(temperature_anomalies.year,"<=",end_year)]
 
-    # construct the SQL query
-    query = f"SELECT year, month, Anomaly FROM temperature_anomalies WHERE 1"
-
-    if start_year:
-        query += f" AND year >= {start_year}"
-
-    if end_year:
-        query += f" AND year <= {end_year}"
-
-    if group_by:
-        query += f" GROUP BY {group_by}"
-
-    if order_by:
-        query += f" ORDER BY {order_by}"
+    columns=[temperature_anomalies.year,func.avg(temperature_anomalies.Anomaly)]
 
     # execute SQL query and retrieve data
-    data = run_sql_command(query)
+    data = run_sql_command(columns,filters,group_by,order_by)
 
     # return the data as JSON response
     return make_json_response(data)

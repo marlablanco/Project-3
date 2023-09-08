@@ -1,8 +1,8 @@
 let fipsToGeojsonIdx = {};
 let geojsonData = {};
 let stateFipsData = {};
-const geojsonUrl = 'http://localhost:5000/api/v1.0/geojson-counties';
-const stateFipsUrl = 'http://localhost:5000/api/v1.0/fips-to-state';
+const geojsonUrl = 'http://127.0.0.1:5000/api/v1.0/geojson-counties';
+const stateFipsUrl = 'http://127.0.0.1:5000/api/v1.0/fips-to-state';
 const usaMap = L.map("map", {
     center: [38.71980474264239, -97.60253906250001],
     zoom: 5

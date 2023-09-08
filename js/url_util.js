@@ -14,5 +14,5 @@ function mapUrlJason(start, end, type) {
 }
 
 function graphUrlJason(start, end, type) {
-    return `http://localhost:5000/api/v1.0/us-disasters-by-year?start=${start}&end=${end}${type}&add_temp=${$('#overlay-temp')[0].checked ? 1 : 0}`;
+    return `http://127.0.0.1:5000/api/v1.0/us-disasters-by-year?start=${start}&end=${end}${type}&add_temp=${$('#overlay-temp')[0].checked ? 1 : 0}`;
 }
