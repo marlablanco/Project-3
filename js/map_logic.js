@@ -1,4 +1,4 @@
-const url = `http://localhost:5000/api/v1.0/us-disasters-by-year-and-location${window.location.search}`;
+const url = `http://127.0.0.1:5000/api/v1.0/us-disasters-by-year-and-location${window.location.search}`;
 const colors = [
     "rgb(91, 255, 99)",
     "rgb(146, 237, 47)",

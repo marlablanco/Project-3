@@ -71,12 +71,12 @@
     <div id="graph-area"></div>
     <script>
         // Page setup
-        d3.json('http://localhost:5000/api/v1.0/us-disaster-types').then(j => {
+        d3.json('http://127.0.0.1:5000/api/v1.0/us-disaster-types').then(j => {
             j.forEach(t => {
                 $('#disaster-type').append(`<option value=${t[0]}>${t[0]}</option>`);
             });
         });
-        d3.json('http://localhost:5000/api/v1.0/us-disaster-years').then(j => {
+        d3.json('http://127.0.0.1:5000/api/v1.0/us-disaster-years').then(j => {
             let fromEnd = 0;
             for (let i = 0; i < j.length; ++i) {
                 fromEnd = j.length - (1 + i);

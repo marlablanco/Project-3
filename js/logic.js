@@ -58,7 +58,7 @@ function makeGraphsMarla() {
     else { makeMonthGraph() }
 }
 function makeYearGraph() {
-    const url = `http://localhost:5000/api/v1.0/temperature-by-year?start_year=${$('#year-start').val()}&end_year=${$('#year-end').val()}`;
+    const url = `http://127.0.0.1:5000/api/v1.0/temperature-by-year?start_year=${$('#year-start').val()}&end_year=${$('#year-end').val()}`;
 
 
     d3.json(url).then(j => {
@@ -89,7 +89,7 @@ function makeYearGraph() {
 }
 
 function makeMonthGraph() {
-    const url = `http://localhost:5000/api/v1.0/temperature-by-month?selected_year=${$('#year-month').val()}`;
+    const url = `http://127.0.0.1:5000/api/v1.0/temperature-by-month?selected_year=${$('#year-month').val()}`;
 
 
     d3.json(url).then(j => {
