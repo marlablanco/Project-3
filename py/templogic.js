@@ -1,8 +1,7 @@
 const url = "http://localhost:5000/api/v1.0/temperature-by-year";
-const url1 = "http://127.0.0.1:5000/api/v1.0/world-disaster-by-year";
 
 function makeGraphsMarla() {
-    d3.json(buildURLMarla(false)).then(j => {
+    d3.json(url).then(j => {
         let year = new Array(j.length);
         let month=new Array(j.length);
         let Anomaly = new Array(j.length);
@@ -18,19 +17,30 @@ function makeGraphsMarla() {
             type: 'bar',
             name: 'Global Temperature Anomalies by Year'
         }];
-        let trace1 = [{
+
+        let layout = {
+            title: "Annual Global Temperature Anomalies (°C) ",
+            xaxis:{title:"Year"},
+            yaxis:{title: "Anomalies"},
+            hovermode: "closest",
+        };
+        let trace2 = [{
             x:month,
             y: Anomaly,
             type: 'bar',
             name: 'Global Temperature Anomalies by Month'
         }];
-        let layout = {
-            title: "Annual Global Temperature Anomalies (°C) "
+        let layout2 = {
+            title: "Monthly Global Temperature Anomalies (°C) ",
+            xaxis:{title:"Month"},
+            yaxis:{title: "Anomalies"},
+            hovermode: "closest",
         };
 
-        Plotly.newPlot("temp-graph", trace, layout);
+        graph=[trace]
+        graph2=[trace2]
+
+        Plotly.newPlot("temp-graph",graph, layout);
+        Plotly.newPlot("month-graph",graph2,layout2)
     });
-}
-function openMap() {
-    window.open(buildUrlJason(true));
 }
