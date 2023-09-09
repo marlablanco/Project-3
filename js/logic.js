@@ -142,6 +142,8 @@ function onStudentDropdownChanged(val) {
     $(`.dropdowns.${val}`).show();
     $('#format-dropdown>option:eq(0)').prop('selected', true);
     $('#format-dropdown').change();
+    $('#dropdown-format>option:eq(0)').prop('selected', true);
+    $('#dropdown-format').change();
 }
 
 function onFormatDropdownChanged(val) {

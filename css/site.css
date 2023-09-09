@@ -22,6 +22,11 @@
     padding: 10px 0;
 }
 
+.month-graph {
+    display: inline-block;
+    width: 260px;
+}
+
 .submit {
     background-color: white;
     display: none;
