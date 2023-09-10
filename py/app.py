@@ -15,11 +15,13 @@ app = Flask(__name__)
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 CORS(app)
 
-FIPS_TO_STATE = json.loads(Path("../data/fipsToState.json").read_text(encoding="utf-8"))
+FIPS_TO_STATE = json.loads(
+    Path("../data/fipsToState.json").read_text(encoding="utf-8"))
 GEOJSON_COUNTIES_FIPS = json.loads(
     Path("../data/geojson-counties-fips.json").read_text(encoding="utf-8")
 )
-GEOJSON_COUNTIES = json.loads(Path("../data/counties.geojson").read_text(encoding="utf-8"))
+GEOJSON_COUNTIES = json.loads(
+    Path("../data/counties.geojson").read_text(encoding="utf-8"))
 
 #################################################
 # Flask Routes
@@ -45,7 +47,8 @@ def disasters_by_date() -> Response:
     args = request.args
 
     # columns
-    cols: List[Column] = [disasters.fy_declared, func.count(distinct(disasters.disaster_number))]
+    cols: List[Column] = [disasters.fy_declared,
+                          func.count(distinct(disasters.disaster_number))]
 
     # if they checked the temperature box, we need to join
     joins: List[Tuple[Column, Column]] = []
@@ -74,7 +77,8 @@ def disasters_by_date() -> Response:
 def disasters_by_year_and_location() -> Response:
     args = request.args
 
-    cols: List[Column] = [disasters.fips_state_code, disasters.fips_county_code]
+    cols: List[Column] = [
+        disasters.fips_state_code, disasters.fips_county_code]
     filters: List[Tuple[Column, str, int | float | str]] = []
     start_date = int(args.get("start")) if args.get("start") else None
     if start_date:
@@ -92,14 +96,16 @@ def disasters_by_year_and_location() -> Response:
 @app.route("/api/v1.0/us-disaster-types")
 def us_disaster_types() -> Response:
     return make_json_response(
-        run_sql_command([distinct(disasters.incident_type)], order=[disasters.incident_type])
+        run_sql_command([distinct(disasters.incident_type)],
+                        order=[disasters.incident_type])
     )
 
 
 @app.route("/api/v1.0/us-disaster-years")
 def us_disaster_years() -> Response:
     return make_json_response(
-        run_sql_command([distinct(disasters.fy_declared)], order=[disasters.fy_declared])
+        run_sql_command([distinct(disasters.fy_declared)],
+                        order=[disasters.fy_declared])
     )
 
 
@@ -111,7 +117,8 @@ def us_disaster_years() -> Response:
 def temp_by_year() -> Response:
     """Return the temperature anomaly data as a JSON Response"""
     args = request.args
-    selected_year = int(args.get("selected_year")) if args.get("selected_year") else None
+    selected_year = int(args.get("selected_year")) if args.get(
+        "selected_year") else None
 
     columns = [temperature_anomalies.month, temperature_anomalies.Anomaly]
     order_by = [temperature_anomalies.month]
@@ -126,7 +133,8 @@ def temp_anomalies() -> Response:
 
     # retrieve query parameters from request
     args = request.args
-    start_year = int(args.get("start_year")) if args.get("start_year") else None
+    start_year = int(args.get("start_year")) if args.get(
+        "start_year") else None
     end_year = int(args.get("end_year")) if args.get("end_year") else None
     group_by = [temperature_anomalies.year]
     order_by = [temperature_anomalies.year]
@@ -135,7 +143,8 @@ def temp_anomalies() -> Response:
         (temperature_anomalies.year, "<=", end_year),
     ]
 
-    columns = [temperature_anomalies.year, func.avg(temperature_anomalies.Anomaly)]
+    columns = [temperature_anomalies.year,
+               func.avg(temperature_anomalies.Anomaly)]
 
     # execute SQL query and retrieve data
     data = run_sql_command(columns, filters, group_by, order_by)
@@ -148,22 +157,32 @@ def temp_anomalies() -> Response:
 # Ryan's routes
 
 
-@app.route("/api/v1.0/world-disaster-by-year")
-def temperature_by_year():
+@app.route("/api/v1.0/world-disaster-by-year", methods=["GET"])
+def world_disaster_by_year():
     """Return the world disasters by year as a JSON Response"""
-    query = """
-            SELECT year, disaster_type, COUNT(*) AS count
-            FROM world_disasters_1970_2021
-            GROUP BY year, disaster_type
-            ORDER BY year
-            """
-    return make_json_response(run_sql_command(query))
+
+    args = request.args
+    start_year = int(args.get("start_year")) if args.get(
+        "start_year") else None
+    end_year = int(args.get("end_year")) if args.get("end_year") else None
+    chosen_type = args.get("type")
+    columns = [world_disasters_1970_2021.year, func.sum(
+        world_disasters_1970_2021.total_deaths)]
+    groupby = [world_disasters_1970_2021.year]
+    orderby = [world_disasters_1970_2021.year]
+    filters = [
+        (world_disasters_1970_2021.year, '>=', start_year),
+        (world_disasters_1970_2021.year, '<=', end_year),
+    ]
+    if chosen_type:
+        filters.append(
+            (world_disasters_1970_2021.disaster_type, '=', chosen_type))
+    return make_json_response(run_sql_command(columns, filters, groupby, orderby))
 
 
 #################################################
 # Helper Functions
 #################################################
-
 op_map = {">=": ge, "<=": le, "!=": ne, "==": eq, ">": gt, "<": lt}
 
 

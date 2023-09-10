@@ -64,11 +64,14 @@
         </div>
         <div class="dropdowns ryan">
             <!-- Ryan's dropdowns area -->
-        </div>
-        <div class="submit-buttons">
-            <button class="submit graph" onclick="graphFunctions[$('#student-dropdown').val()]()">Submit</button>
-            <button class="submit map" onclick="openMap()">Submit</button>
-        </div>
+            <span>Disaster Type:</span>
+            <select id="all_disasters" class="dropdown ryan type">
+                <option>All</option>
+             </select>
+        </div>      
+    <div class="submit-buttons">
+        <button class="submit graph" onclick="graphFunctions[$('#student-dropdown').val()]()">Submit</button>
+        <button class="submit map" onclick="openMap()">Submit</button>
     </div>
     <div id="graph-area"></div>
     <script>

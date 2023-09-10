@@ -1,4 +1,3 @@
-const url3 = "http://127.0.0.1:5000/api/v1.0/world-disaster-by-year"
 
 // ----------------------
 // Jason's function area
@@ -123,10 +122,54 @@ function makeMonthGraph() {
 // Ryan's function area
 // ----------------------
 
+const url3 = "http://127.0.0.1:5000/api/v1.0/world-disaster-by-year?start_year=1970&end_year=2021"
+
 function makeGraphsRyan() {
+    // Fetch JSON data from a URL returned by url3 using D3.js
+    d3.json(url3).then(j => {
+        // Check if the JSON data contains the year
+        let hasYear = j[0].length === 4;
+        let hasDisasterType = j[0].length=== 20;
 
+        // Create arrays to store years, type, and deaths (if available)
+        let years = new Array(j.length);
+        let disaster_type = new Array(j.length);
+        let deaths = new Array(j.length);
+
+        // Extract year, type, and deaths data from JSON
+        for (let i = 0; i < j.length; ++i) {
+            years[i] = j[i][0];
+            disaster_type[i] = j[i][1];
+            deaths[i] = j[i][2];
+        }
+
+        // Define Plotly traces for the bar chart and line chart 
+        let traces = [{
+            x: years,
+            y: disaster_type,
+            type: 'bar',
+            name: 'Natural Disaster Deaths per Year'
+        }];
+
+        // Define the layout for the chart, including the title and y-axes configuration
+        let layout = {
+            title: 'Global Death Tolls of Natural Disasters',
+            xaxis: {
+                title: 'Year' // Label for the x-axis
+            },
+            yaxis: {
+                title: 'Number of Deaths' // Label for the y-axis
+            },
+            yaxis2: {
+                overlaying: 'y',
+                side: 'right'
+            }
+        };
+
+        // Create the chart using Plotly and display it in the HTML element with ID "graph-area"
+        Plotly.newPlot("graph-area", traces, layout);
+    });
 }
-
 // ----------------------
 // HTML listeners & helpers
 // ----------------------
