@@ -5,7 +5,7 @@ const url3 = "http://127.0.0.1:5000/api/v1.0/world-disaster-by-year"
 // ----------------------
 
 function makeGraphsJason() {
-    d3.json(buildUrlJason(false)).then(j => {
+    $.getJSON(buildUrlJason(false), j => {
         // j = list[tuple[year, count]]
         let hasTemp = j[0].length === 3;
         let years = new Array(j.length);
@@ -61,7 +61,7 @@ function makeYearGraph() {
     const url = `http://127.0.0.1:5000/api/v1.0/temperature-by-year?start_year=${$('#year-start').val()}&end_year=${$('#year-end').val()}`;
 
 
-    d3.json(url).then(j => {
+    $.getJSON(url, j => {
         let year = new Array(j.length);
         let Anomaly = new Array(j.length);
         for (let i = 0; i < j.length; ++i) {
@@ -92,7 +92,7 @@ function makeMonthGraph() {
     const url = `http://127.0.0.1:5000/api/v1.0/temperature-by-month?selected_year=${$('#year-month').val()}`;
 
 
-    d3.json(url).then(j => {
+    $.getJSON(url, j => {
         let month = new Array(j.length);
         let Anomaly = new Array(j.length);
         for (let i = 0; i < j.length; ++i) {

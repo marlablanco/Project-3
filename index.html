@@ -7,8 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Project 3 - Natural Disasters Over Time</title>
     <link rel="stylesheet" type="text/css" href="css/site.css">
-    <!-- D3 Library -->
-    <script src="https://d3js.org/d3.v5.min.js"></script>
     <!-- Plotly Library -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="js/jquery-3.7.1.min.js"></script>
@@ -75,7 +73,7 @@
     <div id="graph-area"></div>
     <script>
         // Page setup
-        d3.json('http://127.0.0.1:5000/api/v1.0/us-disaster-types').then(j => {
+        $.getJSON('http://127.0.0.1:5000/api/v1.0/us-disaster-types', j => {
             j.forEach(t => {
                 $('#disaster-type').append(`<option value=${t[0]}>${t[0]}</option>`);
             });

@@ -13,7 +13,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(usaMap);
 
-d3.json(geojsonUrl).then(data => {
+$.getJSON(geojsonUrl, data => {
     geojsonData = data;
     for (let i = 0; i < data.features.length; ++i) {
         let feature = data.features[i];
@@ -21,6 +21,6 @@ d3.json(geojsonUrl).then(data => {
     }
 });
 
-d3.json(stateFipsUrl).then(j => {
+$.getJSON(stateFipsUrl, j => {
     stateFipsData = j;
 });

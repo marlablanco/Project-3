@@ -22,7 +22,7 @@ function disasterCountToColor(count) {
     return colors[9];
 }
 
-d3.json(url).then(async d => {
+$.getJSON(url, async d => {
     disasterCounts = {};
 
     for (let [state, county] of d) {
