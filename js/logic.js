@@ -125,8 +125,8 @@ function makeMonthGraph() {
 const url3 = "http://127.0.0.1:5000/api/v1.0/world-disaster-by-year?start_year=1970&end_year=2021"
 
 function makeGraphsRyan() {
-    // Fetch JSON data from a URL returned by url3 using D3.js
-    d3.json(url3).then(j => {
+    // Fetch JSON data from a URL returned by url3 using jQuery
+    $.getJSON(url3, j => {
         // Check if the JSON data contains the year
         let hasYear = j[0].length === 4;
         let hasDisasterType = j[0].length=== 20;
