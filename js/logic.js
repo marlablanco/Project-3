@@ -76,7 +76,7 @@ function makeYearGraph() {
         }];
 
         let layout = {
-            title: "Annual Global Temperature Anomalies (°C) ",
+            title: "Annual Global Temperature Anomalies (°C)",
             xaxis: { title: "Year" },
             yaxis: { title: "Anomalies" },
             hovermode: "closest",
@@ -108,7 +108,7 @@ function makeMonthGraph() {
         let layout2 = {
             title: "Monthly Global Temperature Anomalies (°C) ",
             xaxis: { title: "Month" },
-            yaxis: { title: "Anomalies" },
+            yaxis: { title: "Anomalies", range: [0, 1.5] },
             hovermode: "closest",
         };
 
