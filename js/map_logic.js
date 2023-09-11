@@ -40,13 +40,13 @@ $.getJSON(url, async d => {
     let minCount = 0;
     let tierWidth = 0;
     if (maxCount - mean < minCount + mean) {
-        tierWidth = Math.round((maxCount - mean) / 5);
+        tierWidth = Math.max(Math.round((maxCount - mean) / 5));
         for (let x = 0; x < disasterTiers.length; ++x) {
             disasterTiers[disasterTiers.length - (x + 1)] = Math.ceil(maxCount - tierWidth * (x + 1))
         }
     }
     else {
-        tierWidth = Math.round((minCount + mean) / 5);
+        tierWidth = Math.max(1,Math.round((minCount + mean) / 5));
         for (let x = 0; x < disasterTiers.length; ++x) {
             disasterTiers[x] = Math.floor(minCount + tierWidth * (x + 1))
         }
