@@ -1,5 +1,5 @@
 # Project-3
-This project is an analysis of several decades of climate and natural disaster data showing the relationship between frequency and severity of natural disasters and temperature anomalies and the positive correlation between the two. It also analyzes global death tolls from natural disasters. Sources include FEMA’s natural disaster declarations in the United States, NASA’s global surface temperature analysis, and a Kaggle database of over 14,000 natural disasters across the world.
+This project is an analysis of several decades of climate and natural disaster data showing the relationship between frequency and severity of natural disasters, temperature anomalies, and the positive correlation between the two. It also analyzes global death tolls from natural disasters. Sources include FEMA’s natural disaster declarations in the United States, National Centers for Environmental Information's global land and ocean surface temperature analysis, and a Kaggle database of over 14,000 natural disasters across the world.
 
 This project demonstrates an in-depth understanding of Python, Pandas, Flask-APIs, SQL and SQLite, Javascript, JQuery, HTML, CSS, Plotly, and Leaflet to turn raw data into visualizations, which can then be used to create conclusions of data in an understandable and appealing way.
 
