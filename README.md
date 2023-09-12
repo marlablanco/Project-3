@@ -8,7 +8,15 @@ To access the database, the app.py folder must be opened, ran, and debugged in o
 The project also includes an interactive map of the United States and the number of disasters that have occurred in each county since 1953. This map was created from the FEMA dataset and utilizes Leaflet and Plotly to create a choropleth map of the United States. One can click on the county of interest and see how many disasters have struck the selected area.
 
 This project showcases a strong knowledge of various data analysis tools and how using these tools together creates a more thorough and detailed analysis than  relying on a singular programming language or database. 
-                  
+    ![image](https://github.com/marlablanco/Project-3/assets/132520770/9747cae5-520f-42c8-95b9-3b0dbb74fbcc)
+    ![image](https://github.com/marlablanco/Project-3/assets/132520770/428acdc5-d9cb-4097-887d-f2ea97f120a6)
+    ![image](https://github.com/marlablanco/Project-3/assets/132520770/9680e645-8580-4729-bc7b-be92c8dc727c)
+    ![image](https://github.com/marlablanco/Project-3/assets/132520770/4e21e5bd-61c1-4207-bf34-d0fbf56bd08f)
+
+
+
+    
+              
 
 
 Sources:
