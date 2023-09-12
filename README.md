@@ -17,7 +17,7 @@ This project showcases a strong knowledge of various data analysis tools and how
 ### Sources
 Database datasets:\
 https://www.fema.gov/openfema-data-page/disaster-declarations-summaries-v2  
-https://data.giss.nasa.gov/gistemp/sources_v4/  
+https://www.ncei.noaa.gov/products/land-based-station/noaa-global-temp  
 https://www.kaggle.com/datasets/brsdincer/all-natural-disasters-19002021-eosdis
 
 `geojson-counties-fips.json` was sourced from https://github.com/plotly/datasets  
