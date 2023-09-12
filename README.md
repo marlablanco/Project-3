@@ -21,7 +21,9 @@ This project showcases a strong knowledge of various data analysis tools and how
 
 Sources:
 https://www.fema.gov/openfema-data-page/disaster-declarations-summaries-v2
+
 https://data.giss.nasa.gov/gistemp/sources_v4/
+
 https://www.kaggle.com/datasets/brsdincer/all-natural-disasters-19002021-eosdis
 
 
